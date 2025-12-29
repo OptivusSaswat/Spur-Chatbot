@@ -17,12 +17,13 @@ app.get("/health", (req, res) => {
 });
 
 if (process.env.NODE_ENV === "production") {
-  const __dirname = path.resolve();
+  // __dirname is backend/dist, go up twice to reach project root
+  const frontendPath = path.join(__dirname, "..", "..", "frontend", "dist");
 
-  app.use(express.static(path.join(__dirname, "frontend", "dist")));
+  app.use(express.static(frontendPath));
 
   app.get("/{*splat}", (_req, res) => {
-    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+    res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
 
